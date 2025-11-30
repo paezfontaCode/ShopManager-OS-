@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: mobilepos-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/mobilepos.db:/app/mobilepos.db
+    environment:
+      - ALLOWED_ORIGINS=http://localhost:3000,http://localhost
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: mobilepos-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  mobilepos-data:

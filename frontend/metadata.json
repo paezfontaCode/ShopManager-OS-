@@ -1,0 +1,5 @@
+{
+  "name": "Mobile Store POS & Management",
+  "description": "A comprehensive Point of Sale (POS) and inventory management system for a mobile phone store, built with React, TypeScript, and Tailwind CSS. It features a dashboard, inventory tracking, a POS interface, and a ticket history.",
+  "requestFramePermissions": []
+}
