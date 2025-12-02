@@ -3,11 +3,22 @@
  * Handles all HTTP requests to the backend API
  */
 
-// Hardcoded for local development to ensure stability
-const API_URL = 'http://localhost:8000';
+// Dynamic API URL based on current host
+// This allows the app to work from localhost, PC IP, or mobile devices
+const getApiUrl = () => {
+  // If running in development mode on localhost, use localhost
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    return 'http://localhost:8000';
+  }
+  // Otherwise, use the same host as the frontend (for mobile access via IP)
+  return `http://${window.location.hostname}:8000`;
+};
+
+const API_URL = getApiUrl();
 
 // Debug: Log the API URL being used
 console.log('🔗 API URL:', API_URL);
+console.log('📱 Current hostname:', window.location.hostname);
 
 // Helper function to get auth token from localStorage
 const getAuthToken = (): string | null => {
