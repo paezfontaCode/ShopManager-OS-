@@ -230,29 +230,201 @@ pytest
 - ✅ Soporte para redes locales (192.168.*.* y 10.*.*.*)
 - ✅ Mejoras en gestión de clientes
 - ✅ Sistema de notificaciones WhatsApp/SMS
-- ✅ Cálculo automático de garantías
-- ✅ Fechas de entrada y entrega en reparaciones
+
+# 3. Verificar estado
+docker-compose ps
+```
 
 ---
 
-## 🚀 Despliegue en Producción
+## 🔧 Configuración
 
-### Usando el script de despliegue:
+### Variables de Entorno
 
-```bash
-chmod +x deploy.sh
-./deploy.sh
+Crea un archivo `.env` en la raíz del proyecto:
+
+```env
+# Backend
+SECRET_KEY=tu-clave-secreta-muy-segura
+DATABASE_URL=postgresql://user:password@localhost:5432/shopmanager
+ALLOWED_ORIGINS=http://localhost:3000,http://tu-dominio.com
+
+# Notificaciones (Opcional)
+NOTIFICATIONS_ENABLED=false
+TWILIO_ACCOUNT_SID=tu_account_sid
+TWILIO_AUTH_TOKEN=tu_auth_token
+TWILIO_WHATSAPP_NUMBER=whatsapp:+14155238886
+TWILIO_SMS_NUMBER=+1234567890
 ```
 
-### Manual:
+---
+
+## 🤝 Contribución
+
+¡Las contribuciones son bienvenidas!
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+### Guías de Contribución
+
+- Sigue las convenciones de código existentes
+- Escribe tests para nuevas funcionalidades
+- Actualiza la documentación según sea necesario
+- Usa commits descriptivos
+
+---
+
+## 📝 Roadmap
+
+- [ ] Reportes y estadísticas avanzadas
+- [ ] Exportación de datos (PDF, Excel)
+- [ ] Integración con impresoras térmicas
+- [ ] App móvil nativa (React Native)
+- [ ] Sistema de facturación electrónica
+- [ ] Multi-tienda (gestión de múltiples sucursales)
+- [ ] Dashboard de métricas en tiempo real
+
+---
+
+## 🐛 Solución de Problemas
+
+### Error de conexión a la base de datos
+```bash
+# Verificar que PostgreSQL esté corriendo
+docker-compose ps
+
+# Ver logs
+docker-compose logs db
+```
+
+### Frontend no se conecta al backend
+```bash
+# Verificar que el backend esté corriendo
+curl http://localhost:8000/api/health
+
+# Verificar CORS en docker-compose.yml
+```
+
+### Error de TypeScript en Dashboard.tsx
+```bash
+# Limpiar cache y reconstruir
+cd frontend
+rm -rf node_modules dist
+npm install
+npm run build
+```
+
+---
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
+
+---
+
+## 👨‍💻 Autor
+
+**paezfontaCode**
+
+- GitHub: [@paezfontaCode](https://github.com/paezfontaCode)
+- Proyecto: [ShopManager-OS-](https://github.com/paezfontaCode/ShopManager-OS-)
+
+---
+
+## 🙏 Agradecimientos
+
+- Comunidad de FastAPI
+- Comunidad de React
+- Todos los contribuidores del proyecto
+
+---
+  password: admin123
+
+Técnico:
+  username: tech
+  password: tech123
+```
+
+---
+
+## 📂 Estructura del Proyecto
+
+```
+ShopManager-OS-/
+├── frontend/                 # Aplicación React
+│   ├── components/          # Componentes reutilizables
+│   ├── context/             # Context API (Auth, Theme, Language)
+│   ├── hooks/               # Custom hooks
+│   ├── pages/               # Páginas principales
+│   ├── services/            # API client
+│   ├── types.ts             # TypeScript types
+│   └── translations.ts      # i18n
+├── backend/                 # API FastAPI
+│   ├── app/
+│   │   ├── api/            # Endpoints
+│   │   ├── models/         # SQLAlchemy models
+│   │   ├── schemas/        # Pydantic schemas
+│   │   ├── services/       # Lógica de negocio
+│   │   └── core/           # Configuración, seguridad
+│   └── tests/              # Tests automatizados
+├── docker-compose.yml       # Orquestación de contenedores
+├── deploy.sh               # Script de despliegue
+└── backup_db.bat           # Script de backup de BD
+```
+
+---
+
+## 🔐 Seguridad
+
+- ✅ Autenticación JWT con tokens seguros
+- ✅ Contraseñas hasheadas con bcrypt
+- ✅ CORS configurado para producción
+- ✅ Variables de entorno para secretos
+- ✅ Validación de datos con Pydantic
+- ✅ Protección contra SQL injection (SQLAlchemy ORM)
+
+---
+
+## 🧪 Testing
+
+El backend incluye tests automatizados con pytest:
 
 ```bash
-# 1. Configurar variables de entorno
-cp .env.example .env
-# Editar .env con tus valores
+cd backend
+pytest
+```
 
-# 2. Construir y levantar contenedores
-docker-compose -f docker-compose.prod.yml up -d --build
+**Cobertura de tests:**
+- ✅ Autenticación y autorización
+- ✅ CRUD de productos
+- ✅ Gestión de tickets
+- ✅ Órdenes de trabajo
+- ✅ Inventario de partes
+
+---
+
+## 📚 Documentación Adicional
+
+- **[INSTALLATION.md](./INSTALLATION.md)** - Guía de instalación detallada
+- **[QUICKSTART.md](./QUICKSTART.md)** - Inicio rápido
+- **[NOTIFICATIONS_SETUP.md](./NOTIFICATIONS_SETUP.md)** - Configuración de notificaciones WhatsApp/SMS
+- **[Frontend README](./frontend/README.md)** - Documentación del frontend
+- **[Backend README](./backend/README.md)** - Documentación del backend
+
+---
+
+## 🔄 Cambios Recientes
+
+### v1.2.0 (Diciembre 2025)
+- ✅ Eliminada línea de impuesto en POS (precios netos)
+- ✅ Configuración CORS para acceso móvil
+- ✅ Soporte para redes locales (192.168.*.* y 10.*.*.*)
+- ✅ Mejoras en gestión de clientes
+- ✅ Sistema de notificaciones WhatsApp/SMS
 
 # 3. Verificar estado
 docker-compose ps
@@ -373,6 +545,39 @@ Si encuentras algún problema o tienes preguntas:
 1. Revisa la [documentación](./INSTALLATION.md)
 2. Busca en [Issues](https://github.com/paezfontaCode/ShopManager-OS-/issues)
 3. Crea un nuevo Issue si es necesario
+
+---
+
+## ☁️ Despliegue en la Nube
+
+¿Quieres desplegar ShopManager-OS en un servidor en la nube? Tenemos una guía completa con múltiples opciones.
+
+### 📊 Comparación Rápida de Proveedores
+
+| Proveedor | Precio/Mes | Dificultad | Mejor Para |
+|-----------|------------|------------|------------|
+| **Railway** | $5-10 | ⭐ Fácil | Empezar rápido |
+| **Render** | $7-25 | ⭐⭐ Fácil | Proyectos pequeños |
+| **DigitalOcean** | $6-12 | ⭐⭐⭐ Medio | Producción seria |
+| **Hetzner** | €4-8 | ⭐⭐⭐ Medio | Mejor precio/rendimiento |
+| **AWS EC2** | $10-30 | ⭐⭐⭐⭐ Difícil | Empresas grandes |
+| **Fly.io** | $5-15 | ⭐⭐ Medio | Aplicaciones globales |
+
+### 🎯 Recomendaciones
+
+- **Para empezar rápido:** Railway o Render (deploy con un click)
+- **Para producción:** DigitalOcean o Hetzner (mejor relación calidad-precio)
+- **Para empresas:** AWS (máxima escalabilidad)
+
+### 📖 Guía Completa
+
+Ver **[GUIA_DESPLIEGUE_NUBE.md](./.gemini/antigravity/brain/39b6ab8e-7f07-4a6b-9b0f-51b19bd7c132/GUIA_DESPLIEGUE_NUBE.md)** para:
+
+- Instrucciones paso a paso para cada proveedor
+- Configuración de dominio y SSL
+- Seguridad y mejores prácticas
+- Backups automáticos
+- Monitoreo y mantenimiento
 
 ---
 
