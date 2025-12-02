@@ -97,17 +97,24 @@ const POS: React.FC = () => {
   }, [products, searchTerm]);
 
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const tax = 0; // Prices already include tax
-  const total = subtotal;
+  const total = subtotal; // Prices are net, no tax
   const totalVES = convert(total);
 
-  const handleCompleteSale = async (paymentDetails: { usd: number; ves: number; method: string }) => {
+  const handleCompleteSale = async (paymentDetails: { usd: number; ves: number; method: string; customerName?: string; isCredit?: boolean }) => {
     try {
+      // Determine payment status
+      let paymentStatus = "Paid";
+      if (paymentDetails.isCredit) {
+        // If paid amount is 0, it's pending. If > 0 but < total, it's partial.
+        const totalPaid = paymentDetails.usd + (paymentDetails.ves / rate);
+        paymentStatus = totalPaid > 0 ? "Partial" : "Pending";
+      }
+
       // Prepare ticket data
       const ticketData = {
-        customer_name: "Cliente General",
+        customer_name: paymentDetails.customerName || "Cliente General",
         payment_method: paymentDetails.method,
-        payment_status: "Paid",
+        payment_status: paymentStatus,
         items: cart.map(item => ({
           product_id: item.id,
           quantity: item.quantity
@@ -121,7 +128,8 @@ const POS: React.FC = () => {
       const createdTicket: any = await ticketsAPI.create(ticketData);
 
       // Success! Show ticket number and clear cart
-      alert(`¡Venta completada exitosamente!\n\nTicket: ${createdTicket.id}\nTotal: $${total.toFixed(2)} / Bs ${totalVES.toFixed(2)}\n\nPagado:\n- Dólares: $${paymentDetails.usd.toFixed(2)}\n- Bolívares: Bs ${paymentDetails.ves.toFixed(2)}`);
+      const statusMsg = paymentStatus === 'Paid' ? 'completada' : 'registrada a crédito';
+      alert(`¡Venta ${statusMsg} exitosamente!\n\nTicket: ${createdTicket.id}\nCliente: ${ticketData.customer_name}\nTotal: $${total.toFixed(2)}\nEstado: ${paymentStatus}`);
 
       setCart([]);
       setIsPaymentModalOpen(false);
@@ -260,10 +268,6 @@ const POS: React.FC = () => {
           <div className="flex justify-between text-gray-600 dark:text-gray-400">
             <span>{t.subtotal}</span>
             <span className="font-medium">${subtotal.toFixed(2)}</span>
-          </div>
-          <div className="flex justify-between text-gray-600 dark:text-gray-400">
-            <span>{t.tax}</span>
-            <span className="font-medium">${tax.toFixed(2)}</span>
           </div>
           <div className="flex justify-between text-2xl font-bold text-gray-900 dark:text-white pt-2 border-t border-dashed dark:border-gray-700">
             <span>{t.total}</span>

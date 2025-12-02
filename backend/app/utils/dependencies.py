@@ -2,24 +2,12 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 from typing import Generator
-from ..database import SessionLocal
+from ..database import SessionLocal, get_db
 from ..models.user import User, UserRole
 from .security import verify_token
 
 # Security scheme for JWT bearer token
 security = HTTPBearer()
-
-
-def get_db() -> Generator[Session, None, None]:
-    """
-    Dependency function to get database session.
-    Yields a database session and ensures it's closed after use.
-    """
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 
 def get_current_user(

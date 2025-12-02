@@ -28,11 +28,18 @@ const WorkOrders: React.FC = () => {
   const [currentOrder, setCurrentOrder] = useState<WorkOrder | null>(null);
   const [formData, setFormData] = useState({
     customer_name: '',
+    customer_phone: '',
+    customer_id: '',
     device: '',
     issue: '',
     status: 'Recibido' as RepairStatus,
     received_date: new Date().toISOString().split('T')[0],
-    estimated_completion_date: ''
+    estimated_completion_date: '',
+    // Payment fields
+    repair_cost: 0,
+    amount_paid: 0,
+    payment_status: 'Pendiente',
+    payment_notes: ''
   });
 
   useEffect(() => {
@@ -57,21 +64,35 @@ const WorkOrders: React.FC = () => {
       setCurrentOrder(order);
       setFormData({
         customer_name: order.customer_name,
+        customer_phone: order.customer_phone || '',
+        customer_id: order.customer_id || '',
         device: order.device,
         issue: order.issue,
         status: order.status,
         received_date: order.received_date.split('T')[0],
-        estimated_completion_date: order.estimated_completion_date ? order.estimated_completion_date.split('T')[0] : ''
+        estimated_completion_date: order.estimated_completion_date ? order.estimated_completion_date.split('T')[0] : '',
+        // Payment fields
+        repair_cost: order.repair_cost || 0,
+        amount_paid: order.amount_paid || 0,
+        payment_status: order.payment_status || 'Pendiente',
+        payment_notes: order.payment_notes || ''
       });
     } else {
       setCurrentOrder(null);
       setFormData({
         customer_name: '',
+        customer_phone: '',
+        customer_id: '',
         device: '',
         issue: '',
         status: 'Recibido',
         received_date: new Date().toISOString().split('T')[0],
-        estimated_completion_date: ''
+        estimated_completion_date: '',
+        // Payment fields
+        repair_cost: 0,
+        amount_paid: 0,
+        payment_status: 'Pendiente',
+        payment_notes: ''
       });
     }
     setIsModalOpen(true);
@@ -96,10 +117,17 @@ const WorkOrders: React.FC = () => {
       // Prepare payload matching backend schema
       const payload: any = {
         customer_name: formData.customer_name,
+        customer_phone: formData.customer_phone || null,
+        customer_id: formData.customer_id || null,
         device: formData.device,
         issue: formData.issue,
         status: formData.status,
-        estimated_completion_date: formData.estimated_completion_date || null
+        estimated_completion_date: formData.estimated_completion_date || null,
+        // Payment fields
+        repair_cost: parseFloat(formData.repair_cost.toString()) || 0,
+        amount_paid: parseFloat(formData.amount_paid.toString()) || 0,
+        payment_status: formData.payment_status,
+        payment_notes: formData.payment_notes || null
       };
 
       if (currentOrder) {
@@ -245,89 +273,219 @@ const WorkOrders: React.FC = () => {
         title={currentOrder ? 'Edit Work Order' : 'Register New Device'}
       >
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Customer Name</label>
-            <input
-              type="text"
-              name="customer_name"
-              value={formData.customer_name}
-              onChange={handleInputChange}
-              required
-              className="w-full px-3 py-2 border rounded-lg dark:bg-dark-bg dark:border-gray-600 focus:ring-primary focus:border-primary"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Device</label>
-            <input
-              type="text"
-              name="device"
-              value={formData.device}
-              onChange={handleInputChange}
-              required
-              className="w-full px-3 py-2 border rounded-lg dark:bg-dark-bg dark:border-gray-600 focus:ring-primary focus:border-primary"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Issue Description</label>
-            <textarea
-              name="issue"
-              value={formData.issue}
-              onChange={handleInputChange}
-              required
-              rows={3}
-              className="w-full px-3 py-2 border rounded-lg dark:bg-dark-bg dark:border-gray-600 focus:ring-primary focus:border-primary"
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
-              <select
-                name="status"
-                value={formData.status}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 border rounded-lg dark:bg-dark-bg dark:border-gray-600 focus:ring-primary focus:border-primary"
-              >
-                <option value="Recibido">Recibido</option>
-                <option value="En Diagnóstico">En Diagnóstico</option>
-                <option value="Esperando Parte">Esperando Parte</option>
-                <option value="En Reparación">En Reparación</option>
-                <option value="Reparado">Reparado</option>
-                <option value="Entregado">Entregado</option>
-              </select>
+          {/* Scrollable Container */}
+          <div className="max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar">
+
+            {/* Customer & Device Row */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Customer Name</label>
+                <input
+                  type="text"
+                  name="customer_name"
+                  value={formData.customer_name}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-3 py-2 border rounded-lg dark:bg-dark-bg dark:border-gray-600 focus:ring-primary focus:border-primary"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Device</label>
+                <input
+                  type="text"
+                  name="device"
+                  value={formData.device}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-3 py-2 border rounded-lg dark:bg-dark-bg dark:border-gray-600 focus:ring-primary focus:border-primary"
+                />
+              </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Received Date</label>
-              <input
-                type="date"
-                name="received_date"
-                value={formData.received_date}
+
+            {/* Contact Info Row */}
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  📱 Teléfono
+                </label>
+                <input
+                  type="tel"
+                  name="customer_phone"
+                  value={formData.customer_phone}
+                  onChange={handleInputChange}
+                  placeholder="+58414XXXXXXX"
+                  className="w-full px-3 py-2 border rounded-lg dark:bg-dark-bg dark:border-gray-600 focus:ring-primary focus:border-primary"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  🆔 Cédula/ID
+                </label>
+                <input
+                  type="text"
+                  name="customer_id"
+                  value={formData.customer_id}
+                  onChange={handleInputChange}
+                  placeholder="V-12345678"
+                  className="w-full px-3 py-2 border rounded-lg dark:bg-dark-bg dark:border-gray-600 focus:ring-primary focus:border-primary"
+                />
+              </div>
+            </div>
+
+            {/* Issue Description */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Issue Description</label>
+              <textarea
+                name="issue"
+                value={formData.issue}
                 onChange={handleInputChange}
                 required
+                rows={2}
                 className="w-full px-3 py-2 border rounded-lg dark:bg-dark-bg dark:border-gray-600 focus:ring-primary focus:border-primary"
               />
             </div>
+
+            {/* Status & Dates Row */}
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
+                <select
+                  name="status"
+                  value={formData.status}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border rounded-lg dark:bg-dark-bg dark:border-gray-600 focus:ring-primary focus:border-primary"
+                >
+                  <option value="Recibido">Recibido</option>
+                  <option value="En Diagnóstico">En Diagnóstico</option>
+                  <option value="Esperando Parte">Esperando Parte</option>
+                  <option value="En Reparación">En Reparación</option>
+                  <option value="Reparado">Reparado</option>
+                  <option value="Entregado">Entregado</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Received Date</label>
+                <input
+                  type="date"
+                  name="received_date"
+                  value={formData.received_date}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-3 py-2 border rounded-lg dark:bg-dark-bg dark:border-gray-600 focus:ring-primary focus:border-primary"
+                />
+              </div>
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Estimated Completion</label>
+              <input
+                type="date"
+                name="estimated_completion_date"
+                value={formData.estimated_completion_date}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border rounded-lg dark:bg-dark-bg dark:border-gray-600 focus:ring-primary focus:border-primary"
+              />
+            </div>
+
+            {/* Payment Section */}
+            <div className="border-t pt-4 mt-4 bg-gray-50 dark:bg-gray-800/50 p-3 rounded-lg">
+              <h3 className="font-semibold text-gray-800 dark:text-white mb-3 flex items-center gap-2 text-sm">
+                <span>💰</span> Información de Pago
+              </h3>
+
+              <div className="grid grid-cols-2 gap-3 mb-3">
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Costo ($)
+                  </label>
+                  <input
+                    type="number"
+                    name="repair_cost"
+                    value={formData.repair_cost}
+                    onChange={handleInputChange}
+                    step="0.01"
+                    min="0"
+                    className="w-full px-2 py-1.5 text-sm border rounded-lg dark:bg-dark-bg dark:border-gray-600 focus:ring-primary focus:border-primary"
+                    placeholder="0.00"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Pagado ($)
+                  </label>
+                  <input
+                    type="number"
+                    name="amount_paid"
+                    value={formData.amount_paid}
+                    onChange={handleInputChange}
+                    step="0.01"
+                    min="0"
+                    max={formData.repair_cost}
+                    className="w-full px-2 py-1.5 text-sm border rounded-lg dark:bg-dark-bg dark:border-gray-600 focus:ring-primary focus:border-primary"
+                    placeholder="0.00"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 mb-3">
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Estado
+                  </label>
+                  <select
+                    name="payment_status"
+                    value={formData.payment_status}
+                    onChange={handleInputChange}
+                    className="w-full px-2 py-1.5 text-sm border rounded-lg dark:bg-dark-bg dark:border-gray-600 focus:ring-primary focus:border-primary"
+                  >
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Pagado">Pagado</option>
+                    <option value="Pago Parcial">Pago Parcial</option>
+                    <option value="Vencido">Vencido</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Saldo
+                  </label>
+                  <input
+                    type="text"
+                    value={`$${(parseFloat(formData.repair_cost.toString()) - parseFloat(formData.amount_paid.toString())).toFixed(2)}`}
+                    disabled
+                    className="w-full px-2 py-1.5 text-sm border rounded-lg bg-gray-100 dark:bg-gray-700 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  Notas de Pago
+                </label>
+                <textarea
+                  name="payment_notes"
+                  value={formData.payment_notes}
+                  onChange={handleInputChange}
+                  rows={1}
+                  className="w-full px-2 py-1.5 text-sm border rounded-lg dark:bg-dark-bg dark:border-gray-600 focus:ring-primary focus:border-primary"
+                  placeholder="Notas..."
+                />
+              </div>
+            </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Estimated Completion</label>
-            <input
-              type="date"
-              name="estimated_completion_date"
-              value={formData.estimated_completion_date}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border rounded-lg dark:bg-dark-bg dark:border-gray-600 focus:ring-primary focus:border-primary"
-            />
-          </div>
-          <div className="flex justify-end space-x-3 mt-6">
+
+          <div className="flex justify-end space-x-3 pt-2 border-t dark:border-gray-700">
             <button
               type="button"
               onClick={handleCloseModal}
-              className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 transition"
+              className="px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-white bg-primary rounded-lg hover:bg-primary-dark transition"
+              className="px-4 py-2 bg-primary hover:bg-primary-dark text-white rounded-lg transition-colors shadow-sm"
             >
               {currentOrder ? 'Update' : 'Create'}
             </button>

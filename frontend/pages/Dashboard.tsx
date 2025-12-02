@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Card from '../components/Card';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -8,13 +7,13 @@ import { useTheme } from '../hooks/useTheme';
 import { dashboardAPI, ticketsAPI } from '../services/api';
 
 const salesData = [
-  { name: 'Mon', sales: 2400 },
-  { name: 'Tue', sales: 1398 },
-  { name: 'Wed', sales: 9800 },
-  { name: 'Thu', sales: 3908 },
-  { name: 'Fri', sales: 4800 },
-  { name: 'Sat', sales: 3800 },
-  { name: 'Sun', sales: 4300 },
+  { name: 'Lun', sales: 0 },
+  { name: 'Mar', sales: 0 },
+  { name: 'Mié', sales: 0 },
+  { name: 'Jue', sales: 0 },
+  { name: 'Vie', sales: 0 },
+  { name: 'Sáb', sales: 0 },
+  { name: 'Dom', sales: 0 },
 ];
 
 const RecentTicketsTable: React.FC<{ tickets: Ticket[] }> = ({ tickets }) => {
@@ -135,7 +134,7 @@ const Dashboard: React.FC = () => {
           }
         />
         <Card
-          title="Low Stock Alert"
+          title={t.lowStockAlert || "Alerta Stock Bajo"}
           value={summary.lowStockProducts}
           colorClasses="bg-orange-500"
           icon={
@@ -175,7 +174,7 @@ const Dashboard: React.FC = () => {
         {recentTickets.length > 0 ? (
           <RecentTicketsTable tickets={recentTickets} />
         ) : (
-          <p className="text-gray-500 dark:text-gray-400 text-center py-8">No tickets yet</p>
+          <p className="text-gray-500 dark:text-gray-400 text-center py-8">No hay tickets recientes</p>
         )}
       </div>
 

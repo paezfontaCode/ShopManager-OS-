@@ -34,11 +34,20 @@ export interface WorkOrder {
   id: string;
   code?: string;
   customer_name: string;
+  customer_phone?: string;
+  customer_id?: string;
   device: string;
   issue: string;
   status: RepairStatus;
   received_date: string;
   estimated_completion_date?: string;
+
+  // Payment fields
+  repair_cost?: number;
+  amount_paid?: number;
+  payment_status?: string;
+  payment_date?: string;
+  payment_notes?: string;
 }
 
 export interface Part {

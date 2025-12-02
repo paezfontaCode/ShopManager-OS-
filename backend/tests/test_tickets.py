@@ -27,7 +27,7 @@ class TestTickets:
         ticket_data = {
             "customer_name": "Test Customer",
             "payment_method": "cash",
-            "payment_status": "paid",
+            "payment_status": "Paid",
             "items": [
                 {
                     "product_id": product.id,
@@ -73,7 +73,7 @@ class TestTickets:
         ticket_data = {
             "customer_name": "Stock Test",
             "payment_method": "cash",
-            "payment_status": "paid",
+            "payment_status": "Paid",
             "items": [
                 {
                     "product_id": product.id,
@@ -83,7 +83,8 @@ class TestTickets:
             ],
             "subtotal": 125.0,
             "tax": 0.0,
-            "total": 125.0
+            "total": 125.0,
+            "exchange_rate": 36.5
         }
         
         response = client.post(

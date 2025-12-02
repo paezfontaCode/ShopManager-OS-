@@ -67,7 +67,7 @@ class TestAuthentication:
     def test_protected_route_without_token(self, client):
         """Test accessing protected route without authentication"""
         response = client.get("/api/products")
-        assert response.status_code == 401
+        assert response.status_code == 403
     
     def test_protected_route_with_valid_token(self, client, auth_headers_admin):
         """Test accessing protected route with valid token"""

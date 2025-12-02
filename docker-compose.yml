@@ -7,10 +7,19 @@ services:
     container_name: mobilepos-backend
     ports:
       - "8000:8000"
-    volumes:
-      - ./backend/mobilepos.db:/app/mobilepos.db
     environment:
-      - ALLOWED_ORIGINS=http://localhost:3000,http://localhost
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/mobilepos
+      - SECRET_KEY=${SECRET_KEY:-your-secret-key-change-in-production}
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=1440
+      - ALLOWED_ORIGINS=http://localhost:3000,http://localhost,http://192.168.*.*:3000,http://10.*.*.*:3000
+      - NOTIFICATIONS_ENABLED=${NOTIFICATIONS_ENABLED:-false}
+      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
+      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+      - TWILIO_WHATSAPP_NUMBER=${TWILIO_WHATSAPP_NUMBER:-whatsapp:+14155238886}
+      - TWILIO_SMS_NUMBER=${TWILIO_SMS_NUMBER}
+    depends_on:
+      - db
     restart: unless-stopped
 
   frontend:
@@ -23,5 +32,18 @@ services:
       - backend
     restart: unless-stopped
 
+  db:
+    image: postgres:15-alpine
+    container_name: mobilepos-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=mobilepos
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
 volumes:
-  mobilepos-data:
+  postgres_data:

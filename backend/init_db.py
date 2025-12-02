@@ -151,27 +151,73 @@ def seed_data():
         
         # Create sample work orders
         print("Creating sample work orders...")
+        from app.models.work_order import PaymentStatus
+        
         work_orders = [
             WorkOrder(
                 id=str(uuid.uuid4()),
                 customer_name="Juan Pérez",
+                customer_phone="+584141234567",
+                customer_id="V-12345678",
                 device="iPhone 13 Pro",
                 issue="Pantalla rota, necesita reemplazo",
-                status=RepairStatus.EN_REPARACION
+                status=RepairStatus.ENTREGADO,
+                repair_cost=150.00,
+                amount_paid=150.00,
+                payment_status=PaymentStatus.PAGADO,
+                payment_notes="Pagado en efectivo"
             ),
             WorkOrder(
                 id=str(uuid.uuid4()),
                 customer_name="María García",
+                customer_phone="+584249876543",
+                customer_id="V-23456789",
                 device="Samsung Galaxy S22",
                 issue="Batería se descarga rápidamente",
-                status=RepairStatus.EN_DIAGNOSTICO
+                status=RepairStatus.ENTREGADO,
+                repair_cost=80.00,
+                amount_paid=0.00,
+                payment_status=PaymentStatus.VENCIDO,
+                payment_notes="Cliente no ha pagado"
             ),
             WorkOrder(
                 id=str(uuid.uuid4()),
                 customer_name="Carlos López",
+                customer_phone="+584125551234",
+                customer_id="V-34567890",
                 device="Google Pixel 7",
                 issue="No enciende, posible problema de placa",
-                status=RepairStatus.RECIBIDO
+                status=RepairStatus.EN_REPARACION,
+                repair_cost=120.00,
+                amount_paid=60.00,
+                payment_status=PaymentStatus.PAGO_PARCIAL,
+                payment_notes="Pagó 50% de anticipo"
+            ),
+            WorkOrder(
+                id=str(uuid.uuid4()),
+                customer_name="Ana Rodríguez",
+                customer_phone="+584167778888",
+                customer_id="V-45678901",
+                device="iPhone 12",
+                issue="Cámara no funciona",
+                status=RepairStatus.REPARADO,
+                repair_cost=95.00,
+                amount_paid=0.00,
+                payment_status=PaymentStatus.PENDIENTE,
+                payment_notes="Pendiente de pago al retirar"
+            ),
+            WorkOrder(
+                id=str(uuid.uuid4()),
+                customer_name="María García",
+                customer_phone="+584249876543",
+                customer_id="V-23456789",
+                device="iPad Air",
+                issue="Pantalla quebrada",
+                status=RepairStatus.ENTREGADO,
+                repair_cost=200.00,
+                amount_paid=100.00,
+                payment_status=PaymentStatus.PAGO_PARCIAL,
+                payment_notes="Debe $100"
             ),
         ]
         

@@ -9,7 +9,8 @@ from sqlalchemy.pool import StaticPool
 
 from app.main import app
 from app.database import Base, get_db
-from app.utils.security import create_access_token
+from app.models.user import User
+from app.utils.security import create_access_token, get_password_hash
 
 
 # Create in-memory SQLite database for testing
@@ -44,7 +45,16 @@ def client(test_db):
         finally:
             pass
     
+    # Override both the database module and the dependencies module
+    # to ensure all parts of the app use the test database
     app.dependency_overrides[get_db] = override_get_db
+    from app.utils import dependencies
+    # We also need to override the get_db in dependencies if it's used directly
+    # But since we refactored dependencies.py to import get_db from database.py,
+    # overriding app.database.get_db should be enough if imports are correct.
+    # However, to be safe, let's override the dependency in the app:
+    # app.dependency_overrides[dependencies.get_db] = override_get_db
+    
     with TestClient(app) as test_client:
         yield test_client
     app.dependency_overrides.clear()
@@ -63,12 +73,28 @@ def tech_token():
 
 
 @pytest.fixture
-def auth_headers_admin(admin_token):
+def auth_headers_admin(test_db, admin_token):
     """Headers with admin authentication"""
+    # Create admin user in the database
+    user = User(
+        username="admin",
+        hashed_password=get_password_hash("admin123"),
+        role="admin"
+    )
+    test_db.add(user)
+    test_db.commit()
     return {"Authorization": f"Bearer {admin_token}"}
 
 
 @pytest.fixture
-def auth_headers_tech(tech_token):
+def auth_headers_tech(test_db, tech_token):
     """Headers with technician authentication"""
+    # Create technician user in the database
+    user = User(
+        username="tech",
+        hashed_password=get_password_hash("tech123"),
+        role="technician"
+    )
+    test_db.add(user)
+    test_db.commit()
     return {"Authorization": f"Bearer {tech_token}"}

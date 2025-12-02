@@ -19,13 +19,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the application code
 COPY . .
 
+# Copy and set permissions for entrypoint script
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
 # Expose port 8000
 EXPOSE 8000
 
-# Run the initialization script to ensure DB is ready (optional, but good for first run)
-# Ideally, this should be handled by an entrypoint script or manually run
-# For simplicity in this dev setup, we'll run uvicorn directly
-# CMD ["python", "init_db.py"] # We might want to run this conditionally
-
-# Command to run the application
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Use entrypoint script to initialize DB and start app
+ENTRYPOINT ["/app/entrypoint.sh"]

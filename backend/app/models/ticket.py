@@ -9,6 +9,8 @@ class PaymentStatus(str, enum.Enum):
     """Payment status enumeration"""
     PAID = "Paid"
     PENDING = "Pending"
+    PARTIAL = "Partial"
+    OVERDUE = "Overdue"
 
 
 class Ticket(Base):

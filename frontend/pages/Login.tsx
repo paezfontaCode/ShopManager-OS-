@@ -86,11 +86,7 @@ const Login: React.FC = () => {
             />
           </div>
 
-          <div className="text-sm text-gray-600 dark:text-gray-400 bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
-            <p className="font-semibold mb-1">Test Credentials:</p>
-            <p>Admin: admin / admin123</p>
-            <p>Tech: tech / tech123</p>
-          </div>
+
 
           <div>
             <button
