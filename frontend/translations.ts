@@ -92,10 +92,65 @@ export interface Translation {
 
   // Parts Inventory
   partName: string;
-  sku: string;
+  partCode: string;
   compatibleModels: string;
   searchPartsPlaceholder: string;
   addNewPart: string;
+
+  // Common labels
+  name: string;
+  stockLabel: string;
+  priceLabel: string;
+  create: string;
+  update: string;
+  cancel: string;
+  delete: string;
+  confirmDelete: string;
+  noDataFound: string;
+  loading: string;
+  imageUrl: string;
+
+  // Import functionality
+  importData: string;
+  importProducts: string;
+  importParts: string;
+  downloadTemplate: string;
+  selectFile: string;
+  uploadFile: string;
+  preview: string;
+  importing: string;
+  importSuccess: string;
+  importError: string;
+  rowsToImport: string;
+  validRows: string;
+  invalidRows: string;
+  confirmImport: string;
+  dragDropFile: string;
+  supportedFormats: string;
+
+  // Modal titles
+  editProduct: string;
+  addProduct: string;
+  editPart: string;
+  addPart: string;
+  compatibleModelsPlaceholder: string;
+
+  // User Management
+  users: string;
+  userManagement: string;
+  addNewUser: string;
+  editUser: string;
+  changePassword: string;
+  role: string;
+  created: string;
+  newPassword: string;
+  confirmPassword: string;
+  currentPassword: string;
+  passwordMismatch: string;
+  passwordChanged: string;
+  userCreated: string;
+  userUpdated: string;
+  userDeleted: string;
 }
 
 export const translations: { [key: string]: Translation } = {
@@ -169,10 +224,65 @@ export const translations: { [key: string]: Translation } = {
     searchWorkOrders: "Search by customer or device...",
     registerNewDevice: "Register New Device",
     partName: "Part Name",
-    sku: "SKU",
+    partCode: "Code",
     compatibleModels: "Compatible Models",
     searchPartsPlaceholder: "Search parts...",
     addNewPart: "Add New Part",
+
+    // Common labels
+    name: "Name",
+    stockLabel: "Stock",
+    priceLabel: "Price",
+    create: "Create",
+    update: "Update",
+    cancel: "Cancel",
+    delete: "Delete",
+    confirmDelete: "Are you sure you want to delete this item?",
+    noDataFound: "No data found",
+    loading: "Loading...",
+    imageUrl: "Image URL",
+
+    // Import functionality
+    importData: "Import Data",
+    importProducts: "Import Products",
+    importParts: "Import Parts",
+    downloadTemplate: "Download Template",
+    selectFile: "Select File",
+    uploadFile: "Upload File",
+    preview: "Preview",
+    importing: "Importing...",
+    importSuccess: "Data imported successfully",
+    importError: "Error importing data",
+    rowsToImport: "Rows to import",
+    validRows: "Valid rows",
+    invalidRows: "Invalid rows",
+    confirmImport: "Confirm Import",
+    dragDropFile: "Drag and drop a file here, or click to select",
+    supportedFormats: "Supported formats: CSV, Excel (.xlsx, .xls)",
+
+    // Modal titles
+    editProduct: "Edit Product",
+    addProduct: "Add New Product",
+    editPart: "Edit Part",
+    addPart: "Add New Part",
+    compatibleModelsPlaceholder: "iPhone 11, iPhone 12, etc.",
+
+    // User Management
+    users: "Users",
+    userManagement: "User Management",
+    addNewUser: "Add New User",
+    editUser: "Edit User",
+    changePassword: "Change Password",
+    role: "Role",
+    created: "Created",
+    newPassword: "New Password",
+    confirmPassword: "Confirm Password",
+    currentPassword: "Current Password",
+    passwordMismatch: "Passwords do not match",
+    passwordChanged: "Password changed successfully",
+    userCreated: "User created successfully",
+    userUpdated: "User updated successfully",
+    userDeleted: "User deleted successfully",
   },
   es: {
     welcome: "Bienvenido",
@@ -244,9 +354,64 @@ export const translations: { [key: string]: Translation } = {
     searchWorkOrders: "Buscar por cliente o dispositivo...",
     registerNewDevice: "Registrar Nuevo Equipo",
     partName: "Nombre de la Parte",
-    sku: "SKU",
+    partCode: "Código",
     compatibleModels: "Modelos Compatibles",
     searchPartsPlaceholder: "Buscar partes...",
     addNewPart: "Añadir Nueva Parte",
+
+    // Common labels
+    name: "Nombre",
+    stockLabel: "Stock",
+    priceLabel: "Precio",
+    create: "Crear",
+    update: "Actualizar",
+    cancel: "Cancelar",
+    delete: "Eliminar",
+    confirmDelete: "¿Estás seguro de que deseas eliminar este elemento?",
+    noDataFound: "No se encontraron datos",
+    loading: "Cargando...",
+    imageUrl: "URL de Imagen",
+
+    // Import functionality
+    importData: "Importar Datos",
+    importProducts: "Importar Productos",
+    importParts: "Importar Partes",
+    downloadTemplate: "Descargar Plantilla",
+    selectFile: "Seleccionar Archivo",
+    uploadFile: "Subir Archivo",
+    preview: "Vista Previa",
+    importing: "Importando...",
+    importSuccess: "Datos importados exitosamente",
+    importError: "Error al importar datos",
+    rowsToImport: "Filas a importar",
+    validRows: "Filas válidas",
+    invalidRows: "Filas inválidas",
+    confirmImport: "Confirmar Importación",
+    dragDropFile: "Arrastra y suelta un archivo aquí, o haz clic para seleccionar",
+    supportedFormats: "Formatos soportados: CSV, Excel (.xlsx, .xls)",
+
+    // Modal titles
+    editProduct: "Editar Producto",
+    addProduct: "Añadir Nuevo Producto",
+    editPart: "Editar Parte",
+    addPart: "Añadir Nueva Parte",
+    compatibleModelsPlaceholder: "iPhone 11, iPhone 12, etc.",
+
+    // User Management
+    users: "Usuarios",
+    userManagement: "Gestión de Usuarios",
+    addNewUser: "Añadir Nuevo Usuario",
+    editUser: "Editar Usuario",
+    changePassword: "Cambiar Contraseña",
+    role: "Rol",
+    created: "Creado",
+    newPassword: "Nueva Contraseña",
+    confirmPassword: "Confirmar Contraseña",
+    currentPassword: "Contraseña Actual",
+    passwordMismatch: "Las contraseñas no coinciden",
+    passwordChanged: "Contraseña cambiada exitosamente",
+    userCreated: "Usuario creado exitosamente",
+    userUpdated: "Usuario actualizado exitosamente",
+    userDeleted: "Usuario eliminado exitosamente",
   },
 };

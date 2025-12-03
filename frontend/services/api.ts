@@ -209,7 +209,48 @@ export const dashboardAPI = {
   },
 };
 
+// Users API
+export const usersAPI = {
+  getAll: async () => {
+    const response = await fetchWithAuth('/api/users');
+    return handleResponse(response);
+  },
+
+  create: async (user: any) => {
+    const response = await fetchWithAuth('/api/users', {
+      method: 'POST',
+      body: JSON.stringify(user),
+    });
+    return handleResponse(response);
+  },
+
+  update: async (id: number, user: any) => {
+    const response = await fetchWithAuth(`/api/users/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(user),
+    });
+    return handleResponse(response);
+  },
+
+  changePassword: async (id: number, passwordData: any) => {
+    const response = await fetchWithAuth(`/api/users/${id}/password`, {
+      method: 'PUT',
+      body: JSON.stringify(passwordData),
+    });
+    return handleResponse(response);
+  },
+
+  delete: async (id: number) => {
+    const response = await fetchWithAuth(`/api/users/${id}`, {
+      method: 'DELETE',
+    });
+    if (response.status === 204) return;
+    return handleResponse(response);
+  },
+};
+
 // Export all APIs
+
 export default {
   auth: authAPI,
   products: productsAPI,
@@ -217,4 +258,5 @@ export default {
   workOrders: workOrdersAPI,
   parts: partsAPI,
   dashboard: dashboardAPI,
+  users: usersAPI,
 };

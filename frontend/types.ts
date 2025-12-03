@@ -58,3 +58,10 @@ export interface Part {
   price: number;
   compatible_models: string[];
 }
+
+export interface User {
+  id: number;
+  username: string;
+  role: 'admin' | 'technician';
+  created_at?: string;
+}

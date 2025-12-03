@@ -4,6 +4,7 @@ import { Product } from '../types';
 import { useLanguage } from '../hooks/useLanguage';
 import { productsAPI } from '../services/api';
 import Modal from '../components/Modal';
+import ImportModal from '../components/ImportModal';
 
 const Inventory: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -14,6 +15,7 @@ const Inventory: React.FC = () => {
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
   const [formData, setFormData] = useState({
     name: '',
@@ -92,8 +94,22 @@ const Inventory: React.FC = () => {
     }
   };
 
+  const handleImportProducts = async (data: any[]) => {
+    try {
+      // Import all valid products
+      for (const productData of data) {
+        await productsAPI.create(productData);
+      }
+      fetchProducts();
+      alert(t.importSuccess);
+    } catch (err) {
+      console.error('Error importing products:', err);
+      throw new Error(t.importError);
+    }
+  };
+
   const handleDelete = async (id: number) => {
-    if (window.confirm('Are you sure you want to delete this product?')) {
+    if (window.confirm(t.confirmDelete)) {
       try {
         await productsAPI.delete(id);
         fetchProducts();
@@ -119,7 +135,7 @@ const Inventory: React.FC = () => {
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
-          <p className="text-gray-600 dark:text-gray-400">Loading products...</p>
+          <p className="text-gray-600 dark:text-gray-400">{t.loading}</p>
         </div>
       </div>
     );
@@ -149,13 +165,22 @@ const Inventory: React.FC = () => {
             <svg className="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" /></svg>
           </div>
         </div>
-        <button
-          onClick={() => handleOpenModal()}
-          className="w-full md:w-auto bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded-lg transition duration-300 flex items-center justify-center"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" /></svg>
-          {t.addNewProduct}
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={() => setIsImportModalOpen(true)}
+            className="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 flex items-center justify-center"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+            {t.importProducts}
+          </button>
+          <button
+            onClick={() => handleOpenModal()}
+            className="w-full md:w-auto bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded-lg transition duration-300 flex items-center justify-center"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" /></svg>
+            {t.addNewProduct}
+          </button>
+        </div>
       </div>
 
       <div className="overflow-x-auto">
@@ -194,7 +219,7 @@ const Inventory: React.FC = () => {
                         onClick={() => handleDelete(product.id)}
                         className="font-medium text-red-600 dark:text-red-400 hover:underline"
                       >
-                        Delete
+                        {t.delete}
                       </button>
                     </div>
                   </td>
@@ -203,7 +228,7 @@ const Inventory: React.FC = () => {
             ) : (
               <tr>
                 <td colSpan={5} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
-                  No products found
+                  {t.noDataFound}
                 </td>
               </tr>
             )}
@@ -214,11 +239,11 @@ const Inventory: React.FC = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        title={currentProduct ? 'Edit Product' : 'Add New Product'}
+        title={currentProduct ? t.editProduct : t.addProduct}
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t.name}</label>
             <input
               type="text"
               name="name"
@@ -229,7 +254,7 @@ const Inventory: React.FC = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Brand</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t.brand}</label>
             <input
               type="text"
               name="brand"
@@ -241,7 +266,7 @@ const Inventory: React.FC = () => {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Stock</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t.stockLabel}</label>
               <input
                 type="number"
                 name="stock"
@@ -253,7 +278,7 @@ const Inventory: React.FC = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Price</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t.priceLabel}</label>
               <input
                 type="number"
                 name="price"
@@ -267,7 +292,7 @@ const Inventory: React.FC = () => {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Image URL</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t.imageUrl}</label>
             <input
               type="text"
               name="imageUrl"
@@ -282,17 +307,24 @@ const Inventory: React.FC = () => {
               onClick={handleCloseModal}
               className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 transition"
             >
-              Cancel
+              {t.cancel}
             </button>
             <button
               type="submit"
               className="px-4 py-2 text-white bg-primary rounded-lg hover:bg-primary-dark transition"
             >
-              {currentProduct ? 'Update' : 'Create'}
+              {currentProduct ? t.update : t.create}
             </button>
           </div>
         </form>
       </Modal>
+
+      <ImportModal
+        isOpen={isImportModalOpen}
+        onClose={() => setIsImportModalOpen(false)}
+        onImport={handleImportProducts}
+        type="products"
+      />
     </div>
   );
 };

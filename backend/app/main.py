@@ -7,7 +7,8 @@ from .routers import (
     tickets_router,
     work_orders_router,
     parts_router,
-    dashboard_router
+    dashboard_router,
+    users_router
 )
 
 # Create FastAPI application
@@ -41,6 +42,7 @@ app.include_router(tickets_router)
 app.include_router(work_orders_router)
 app.include_router(parts_router)
 app.include_router(dashboard_router)
+app.include_router(users_router)
 
 
 @app.get("/")

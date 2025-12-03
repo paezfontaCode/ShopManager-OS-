@@ -24,6 +24,7 @@ import RepairDashboard from './pages/RepairDashboard';
 import WorkOrders from './pages/WorkOrders';
 import PartsInventory from './pages/PartsInventory';
 import Clients from './pages/Clients';
+import UserManagement from './pages/UserManagement';
 
 const MainLayout: React.FC = () => {
   const { backgroundImage } = useAppSettings();
@@ -59,6 +60,7 @@ const MainLayout: React.FC = () => {
                   <Route path="/tickets" element={<Tickets />} />
                   <Route path="/work-orders" element={<WorkOrders />} />
                   <Route path="/clients" element={<Clients />} />
+                  <Route path="/users" element={<UserManagement />} />
                 </>
               )}
               {userRole === 'technician' && (
