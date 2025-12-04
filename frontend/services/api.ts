@@ -1,5 +1,5 @@
 /**
- * API Service for MobilePOS
+ * API Service for ServiceFlow
  * Handles all HTTP requests to the backend API
  */
 

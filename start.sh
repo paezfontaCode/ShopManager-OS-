@@ -1,11 +1,11 @@
 #!/bin/bash
 ########################################
-# ShopManager-OS - Inicio Automático
+# ServiceFlow - Inicio Automático
 ########################################
 
 echo ""
 echo "========================================"
-echo "  ShopManager-OS - Iniciando..."
+echo "  ServiceFlow - Iniciando..."
 echo "========================================"
 echo ""
 
@@ -37,7 +37,7 @@ docker-compose up -d
 if [ $? -eq 0 ]; then
     echo ""
     echo "========================================"
-    echo "  ShopManager-OS iniciado correctamente!"
+    echo "  ServiceFlow iniciado correctamente!"
     echo "========================================"
     echo ""
     echo "  Frontend: http://localhost:3000"
@@ -63,7 +63,7 @@ if [ $? -eq 0 ]; then
     cleanup() {
         echo ""
         echo "========================================"
-        echo "  Deteniendo ShopManager-OS..."
+        echo "  Deteniendo ServiceFlow..."
         echo "========================================"
         docker-compose down
         echo ""

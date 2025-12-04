@@ -1,9 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=ShopManager-OS
-Comment=Sistema de Gestión para Tiendas de Móviles
-Exec=/ruta/completa/al/proyecto/start_silent.sh
-Icon=applications-internet
-Terminal=false
-Categories=Application;Network;
-StartupNotify=false

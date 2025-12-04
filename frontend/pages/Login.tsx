@@ -37,10 +37,8 @@ const Login: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-light via-primary to-secondary p-4">
       <div className="w-full max-w-md bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-2xl p-8 space-y-6">
         <div className="text-center">
-          <div className="inline-block bg-secondary/20 p-4 rounded-full mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-secondary" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-            </svg>
+          <div className="inline-block p-4 rounded-full mb-4">
+            <img src="/images/logo/logo.png" alt="ServiceFlow Logo" className="h-24 w-auto object-contain" />
           </div>
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white">{t.welcome}</h2>
           <p className="text-gray-600 dark:text-gray-300 mt-2">{t.signInContinue}</p>

@@ -1,11 +1,11 @@
 @echo off
 REM ========================================
-REM ShopManager-OS - Inicio Automatico
+REM ServiceFlow - Inicio Automatico
 REM ========================================
 
 echo.
 echo ========================================
-echo   ShopManager-OS - Iniciando...
+echo   ServiceFlow - Iniciando...
 echo ========================================
 echo.
 
@@ -38,7 +38,7 @@ docker-compose up -d
 if %errorlevel% equ 0 (
     echo.
     echo ========================================
-    echo   ShopManager-OS iniciado correctamente!
+    echo   ServiceFlow iniciado correctamente!
     echo ========================================
     echo.
     echo   Frontend: http://localhost:3000
@@ -69,7 +69,7 @@ REM Este codigo se ejecuta cuando se cierra la ventana o se presiona Ctrl+C
 :cleanup
 echo.
 echo ========================================
-echo   Deteniendo ShopManager-OS...
+echo   Deteniendo ServiceFlow...
 echo ========================================
 docker-compose down
 echo.

@@ -7,23 +7,39 @@
 # OS
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # Python
 __pycache__/
 *.py[cod]
 *$py.class
 venv/
+env/
 .env
+.venv
 
 # Node
 node_modules/
-npm-debug.log
-yarn-error.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Database
+# Database & Backups
 *.sqlite3
 *.db
 *.db-journal
+backups/
+*.sql
+
+# Docker
+docker-compose.override.yml
 
 # Logs
 *.log
+logs/
+
+# Build
+dist/
+build/
+coverage/
+

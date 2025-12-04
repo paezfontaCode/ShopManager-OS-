@@ -1,13 +1,11 @@
 """
 Database initialization and seed data script.
-Run this script to create all tables and populate with initial data.
+Run this script to create all tables and populate with initial users.
 """
 from app.database import engine, SessionLocal, Base
-from app.models import User, Product, Part, WorkOrder, Ticket, TicketItem
+from app.models import User
 from app.models.user import UserRole
-from app.models.work_order import RepairStatus
 from app.utils.security import get_password_hash
-import uuid
 
 
 def init_db():
@@ -41,195 +39,11 @@ def seed_data():
         db.commit()
         print("✓ Users created (admin/admin123, tech/tech123)")
         
-        # Create products
-        print("Creating products...")
-        products = [
-            Product(
-                name="iPhone 14 Pro",
-                brand="Apple",
-                stock=15,
-                price=999.99,
-                image_url="https://images.unsplash.com/photo-1678652197950-d4c0b0a5e5a5",
-                min_stock=5
-            ),
-            Product(
-                name="Galaxy S23 Ultra",
-                brand="Samsung",
-                stock=12,
-                price=1199.99,
-                image_url="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c",
-                min_stock=5
-            ),
-            Product(
-                name="Pixel 8 Pro",
-                brand="Google",
-                stock=8,
-                price=899.99,
-                image_url="https://images.unsplash.com/photo-1598327105666-5b89351aff97",
-                min_stock=5
-            ),
-            Product(
-                name="iPhone 13",
-                brand="Apple",
-                stock=20,
-                price=699.99,
-                image_url="https://images.unsplash.com/photo-1632633173522-c8e6e1b2f7e0",
-                min_stock=5
-            ),
-            Product(
-                name="Galaxy A54",
-                brand="Samsung",
-                stock=25,
-                price=449.99,
-                image_url="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9",
-                min_stock=10
-            ),
-            Product(
-                name="OnePlus 11",
-                brand="OnePlus",
-                stock=3,
-                price=699.99,
-                image_url="https://images.unsplash.com/photo-1565849904461-04a58ad377e0",
-                min_stock=5
-            ),
-        ]
-        
-        for product in products:
-            db.add(product)
-        db.commit()
-        print(f"✓ Created {len(products)} products")
-        
-        # Create parts
-        print("Creating repair parts...")
-        parts = [
-            Part(
-                name="Pantalla LCD iPhone 14",
-                sku="LCD-IP14-001",
-                stock=10,
-                price=199.99,
-                compatible_models=["iPhone 14", "iPhone 14 Pro"],
-                min_stock=5
-            ),
-            Part(
-                name="Batería Samsung S23",
-                sku="BAT-S23-001",
-                stock=15,
-                price=49.99,
-                compatible_models=["Galaxy S23", "Galaxy S23 Ultra"],
-                min_stock=8
-            ),
-            Part(
-                name="Cámara Trasera Pixel 8",
-                sku="CAM-PX8-001",
-                stock=5,
-                price=89.99,
-                compatible_models=["Pixel 8", "Pixel 8 Pro"],
-                min_stock=3
-            ),
-            Part(
-                name="Puerto de Carga USB-C",
-                sku="CHG-USBC-001",
-                stock=25,
-                price=19.99,
-                compatible_models=["Universal"],
-                min_stock=10
-            ),
-            Part(
-                name="Vidrio Templado Universal",
-                sku="GLASS-UNI-001",
-                stock=2,
-                price=9.99,
-                compatible_models=["Universal"],
-                min_stock=20
-            ),
-        ]
-        
-        for part in parts:
-            db.add(part)
-        db.commit()
-        print(f"✓ Created {len(parts)} repair parts")
-        
-        # Create sample work orders
-        print("Creating sample work orders...")
-        from app.models.work_order import PaymentStatus
-        
-        work_orders = [
-            WorkOrder(
-                id=str(uuid.uuid4()),
-                customer_name="Juan Pérez",
-                customer_phone="+584141234567",
-                customer_id="V-12345678",
-                device="iPhone 13 Pro",
-                issue="Pantalla rota, necesita reemplazo",
-                status=RepairStatus.ENTREGADO,
-                repair_cost=150.00,
-                amount_paid=150.00,
-                payment_status=PaymentStatus.PAGADO,
-                payment_notes="Pagado en efectivo"
-            ),
-            WorkOrder(
-                id=str(uuid.uuid4()),
-                customer_name="María García",
-                customer_phone="+584249876543",
-                customer_id="V-23456789",
-                device="Samsung Galaxy S22",
-                issue="Batería se descarga rápidamente",
-                status=RepairStatus.ENTREGADO,
-                repair_cost=80.00,
-                amount_paid=0.00,
-                payment_status=PaymentStatus.VENCIDO,
-                payment_notes="Cliente no ha pagado"
-            ),
-            WorkOrder(
-                id=str(uuid.uuid4()),
-                customer_name="Carlos López",
-                customer_phone="+584125551234",
-                customer_id="V-34567890",
-                device="Google Pixel 7",
-                issue="No enciende, posible problema de placa",
-                status=RepairStatus.EN_REPARACION,
-                repair_cost=120.00,
-                amount_paid=60.00,
-                payment_status=PaymentStatus.PAGO_PARCIAL,
-                payment_notes="Pagó 50% de anticipo"
-            ),
-            WorkOrder(
-                id=str(uuid.uuid4()),
-                customer_name="Ana Rodríguez",
-                customer_phone="+584167778888",
-                customer_id="V-45678901",
-                device="iPhone 12",
-                issue="Cámara no funciona",
-                status=RepairStatus.REPARADO,
-                repair_cost=95.00,
-                amount_paid=0.00,
-                payment_status=PaymentStatus.PENDIENTE,
-                payment_notes="Pendiente de pago al retirar"
-            ),
-            WorkOrder(
-                id=str(uuid.uuid4()),
-                customer_name="María García",
-                customer_phone="+584249876543",
-                customer_id="V-23456789",
-                device="iPad Air",
-                issue="Pantalla quebrada",
-                status=RepairStatus.ENTREGADO,
-                repair_cost=200.00,
-                amount_paid=100.00,
-                payment_status=PaymentStatus.PAGO_PARCIAL,
-                payment_notes="Debe $100"
-            ),
-        ]
-        
-        for order in work_orders:
-            db.add(order)
-        db.commit()
-        print(f"✓ Created {len(work_orders)} work orders")
-        
-        print("\n✅ Database seeded successfully!")
-        print("\nTest credentials:")
+        print("\n✅ Database initialized successfully!")
+        print("\nLogin credentials:")
         print("  Admin: username='admin', password='admin123'")
         print("  Tech:  username='tech', password='tech123'")
+        print("\nYour system is ready to use with a clean database.")
         
     except Exception as e:
         print(f"\n❌ Error seeding database: {e}")

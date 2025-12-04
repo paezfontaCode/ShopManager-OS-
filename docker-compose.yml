@@ -4,11 +4,11 @@ services:
   backend:
     build:
       context: ./backend
-    container_name: mobilepos-backend
+    container_name: serviceflow-backend
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/mobilepos
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/serviceflow
       - SECRET_KEY=${SECRET_KEY:-your-secret-key-change-in-production}
       - ALGORITHM=HS256
       - ACCESS_TOKEN_EXPIRE_MINUTES=1440
@@ -25,7 +25,7 @@ services:
   frontend:
     build:
       context: ./frontend
-    container_name: mobilepos-frontend
+    container_name: serviceflow-frontend
     ports:
       - "3000:80"
     depends_on:
@@ -34,11 +34,11 @@ services:
 
   db:
     image: postgres:15-alpine
-    container_name: mobilepos-db
+    container_name: serviceflow-db
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=mobilepos
+      - POSTGRES_DB=serviceflow
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:

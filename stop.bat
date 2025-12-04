@@ -1,11 +1,11 @@
 @echo off
 REM ========================================
-REM ShopManager-OS - Detener Servicios
+REM ServiceFlow - Detener Servicios
 REM ========================================
 
 echo.
 echo ========================================
-echo   Deteniendo ShopManager-OS...
+echo   Deteniendo ServiceFlow...
 echo ========================================
 echo.
 

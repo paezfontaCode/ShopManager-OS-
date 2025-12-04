@@ -1,11 +1,11 @@
 #!/bin/bash
 ########################################
-# ShopManager-OS - Detener Servicios
+# ServiceFlow - Detener Servicios
 ########################################
 
 echo ""
 echo "========================================"
-echo "  Deteniendo ShopManager-OS..."
+echo "  Deteniendo ServiceFlow..."
 echo "========================================"
 echo ""
 

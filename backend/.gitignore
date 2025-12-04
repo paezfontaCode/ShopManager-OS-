@@ -16,3 +16,10 @@ htmlcov/
 dist/
 build/
 *.egg-info/
+
+# User uploaded files (keep only README.md)
+uploads/*
+!uploads/README.md
+!uploads/*/
+!uploads/*/README.md
+

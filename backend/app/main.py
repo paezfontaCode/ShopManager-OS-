@@ -13,8 +13,8 @@ from .routers import (
 
 # Create FastAPI application
 app = FastAPI(
-    title="MobilePOS API",
-    description="Backend API for Mobile Store Management System",
+    title="ServiceFlow API",
+    description="Backend API for ServiceFlow Management System",
     version="1.0.0",
     docs_url="/docs",
     redoc_url="/redoc"
@@ -49,7 +49,7 @@ app.include_router(users_router)
 def root():
     """Root endpoint"""
     return {
-        "message": "MobilePOS API",
+        "message": "ServiceFlow API",
         "version": "1.0.0",
         "docs": "/docs"
     }

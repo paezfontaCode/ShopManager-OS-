@@ -12,3 +12,5 @@ pytest==8.3.4
 httpx==0.28.1
 psycopg2-binary==2.9.9
 twilio==9.0.4
+gspread==6.1.2
+google-auth==2.35.0
