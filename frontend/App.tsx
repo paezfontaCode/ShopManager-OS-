@@ -27,16 +27,18 @@ import Clients from './pages/Clients';
 import UserManagement from './pages/UserManagement';
 
 const MainLayout: React.FC = () => {
-  const { backgroundImage } = useAppSettings();
   const { userRole } = useAuth();
 
-  const dottedPattern = 'radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px)';
+  // Different background for admin and technician
+  const backgroundImage = userRole === 'admin'
+    ? '/images/admin-bg.jpg'
+    : '/images/tecnico-bg.jpg';
 
   const mainStyle: React.CSSProperties = {
-    backgroundImage: backgroundImage ? `url(${backgroundImage})` : dottedPattern,
-    backgroundSize: backgroundImage ? 'cover' : '1.5rem 1.5rem',
+    backgroundImage: `url('${backgroundImage}')`,
+    backgroundSize: 'cover',
     backgroundPosition: 'center',
-    backgroundAttachment: backgroundImage ? 'fixed' : 'initial',
+    backgroundAttachment: 'fixed',
   };
 
 

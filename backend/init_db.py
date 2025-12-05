@@ -55,7 +55,7 @@ def seed_data():
 
 if __name__ == "__main__":
     print("=" * 50)
-    print("MobilePOS Database Initialization")
+    print("ServiceFlow Database Initialization")
     print("=" * 50)
     
     init_db()

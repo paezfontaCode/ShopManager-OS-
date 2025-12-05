@@ -21,7 +21,7 @@ const RecentTicketsTable: React.FC<{ tickets: Ticket[] }> = ({ tickets }) => {
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-left text-gray-500 dark:text-gray-400">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-dark-bg dark:text-gray-400">
+        <thead className="text-xs text-gray-700 dark:text-gray-400 uppercase bg-gray-50 dark:bg-dark-bg">
           <tr>
             <th scope="col" className="px-6 py-3">{t.ticketId}</th>
             <th scope="col" className="px-6 py-3">{t.date}</th>
@@ -112,7 +112,7 @@ const Dashboard: React.FC = () => {
         <Card
           title={t.totalSales}
           value={`$${summary.totalSales.toFixed(2)}`}
-          colorClasses="bg-secondary"
+          colorClasses="bg-blue-500"
           icon={
             <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01" /></svg>
           }
@@ -128,7 +128,7 @@ const Dashboard: React.FC = () => {
         <Card
           title={t.totalTickets}
           value={summary.totalTickets}
-          colorClasses="bg-primary"
+          colorClasses="bg-indigo-500"
           icon={
             <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 002 2h14a2 2 0 002-2V7a2 2 0 00-2-2H5z" /></svg>
           }
@@ -143,39 +143,37 @@ const Dashboard: React.FC = () => {
         />
       </div>
 
-      <div className="mt-8 bg-white dark:bg-dark-card p-4 rounded-lg shadow-md">
-        <h3 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">{t.weeklySales}</h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={salesData}>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={theme === 'dark' ? 'rgba(107, 114, 128, 0.2)' : 'rgba(209, 213, 219, 0.5)'} />
-            <XAxis dataKey="name" tick={{ fill: tickColor }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fill: tickColor }} axisLine={false} tickLine={false} />
-            <Tooltip
-              contentStyle={{
-                backgroundColor: theme === 'dark' ? '#202330' : '#ffffff',
-                borderColor: theme === 'dark' ? 'rgba(107, 114, 128, 0.5)' : '#dddddd',
-                color: theme === 'dark' ? '#ffffff' : '#000000'
-              }}
-              cursor={{ fill: 'rgba(99, 102, 241, 0.1)' }}
-            />
-            <Bar dataKey="sales" fill="url(#colorSales)" />
-            <defs>
-              <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#6366F1" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="#3B82F6" stopOpacity={0.8} />
-              </linearGradient>
-            </defs>
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
+      <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="bg-white dark:bg-dark-card p-6 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700/50">
+          <h3 className="text-lg font-bold mb-6 text-gray-700 dark:text-white">{t.weeklySales}</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={salesData}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={theme === 'dark' ? 'rgba(107, 114, 128, 0.2)' : 'rgba(209, 213, 219, 0.5)'} />
+              <XAxis dataKey="name" tick={{ fill: tickColor }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fill: tickColor }} axisLine={false} tickLine={false} />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: theme === 'dark' ? '#202330' : '#ffffff',
+                  borderColor: theme === 'dark' ? 'rgba(107, 114, 128, 0.5)' : '#dddddd',
+                  color: theme === 'dark' ? '#ffffff' : '#000000',
+                  borderRadius: '8px',
+                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                }}
+                cursor={{ fill: 'rgba(99, 102, 241, 0.05)' }}
+              />
+              <Bar dataKey="sales" fill="#3B82F6" radius={[4, 4, 0, 0]} barSize={40} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
 
-      <div className="mt-8 bg-white dark:bg-dark-card p-4 rounded-lg shadow-md">
-        <h3 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">{t.recentTickets}</h3>
-        {recentTickets.length > 0 ? (
-          <RecentTicketsTable tickets={recentTickets} />
-        ) : (
-          <p className="text-gray-500 dark:text-gray-400 text-center py-8">No hay tickets recientes</p>
-        )}
+        <div className="bg-white dark:bg-dark-card p-6 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700/50">
+          <h3 className="text-lg font-bold mb-6 text-gray-700 dark:text-white">{t.recentTickets}</h3>
+          {recentTickets.length > 0 ? (
+            <RecentTicketsTable tickets={recentTickets} />
+          ) : (
+            <p className="text-gray-400 dark:text-gray-500 text-center py-12">No hay tickets recientes</p>
+          )}
+        </div>
       </div>
 
     </div>

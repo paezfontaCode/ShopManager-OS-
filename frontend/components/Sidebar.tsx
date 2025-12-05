@@ -3,13 +3,12 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { ADMIN_NAV_LINKS, TECHNICIAN_NAV_LINKS } from '../constants';
 import { useLanguage } from '../hooks/useLanguage';
-import { useAppSettings } from '../hooks/useAppSettings';
 import { useAuth } from '../hooks/useAuth';
+import Logo from './Logo';
 
 
 const Sidebar: React.FC = () => {
   const { t } = useLanguage();
-  const { appName } = useAppSettings();
   const { userRole } = useAuth();
 
   const navLinks = userRole === 'admin' ? ADMIN_NAV_LINKS : TECHNICIAN_NAV_LINKS;
@@ -18,8 +17,7 @@ const Sidebar: React.FC = () => {
     <div className="hidden md:flex flex-col w-64 bg-white dark:bg-dark-card shadow-lg">
       <div className="flex items-center justify-center h-20 border-b border-gray-200 dark:border-gray-700/50">
         <div className="flex items-center">
-          <img src="/images/logo/logo.png" alt="ServiceFlow Logo" className="h-12 w-auto object-contain" />
-          <h1 className="text-2xl font-bold ml-2 text-gray-800 dark:text-white">{appName}</h1>
+          <Logo className="h-10 w-auto" showText={true} textColor="text-gray-800 dark:text-white" />
         </div>
       </div>
       <ul className="flex flex-col py-4">

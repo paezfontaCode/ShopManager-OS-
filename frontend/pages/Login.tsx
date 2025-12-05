@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { useLanguage } from '../hooks/useLanguage';
 import { useNavigate } from 'react-router-dom';
+import Logo from '../components/Logo';
 
 const Login: React.FC = () => {
   const { login, isLoading, error } = useAuth();
@@ -37,8 +38,8 @@ const Login: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-light via-primary to-secondary p-4">
       <div className="w-full max-w-md bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl shadow-2xl p-8 space-y-6">
         <div className="text-center">
-          <div className="inline-block p-4 rounded-full mb-4">
-            <img src="/images/logo/logo.png" alt="ServiceFlow Logo" className="h-24 w-auto object-contain" />
+          <div className="flex justify-center mb-4 animate-float">
+            <Logo className="h-24 w-auto drop-shadow-2xl" showText={true} />
           </div>
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white">{t.welcome}</h2>
           <p className="text-gray-600 dark:text-gray-300 mt-2">{t.signInContinue}</p>
